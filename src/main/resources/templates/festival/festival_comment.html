@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:insert="~{/fragment/header ::nav}"></div>
+    <div th:insert="~{/fragment/header ::copy}"></div>
+    <div th:insert="~{/fragment/header ::menu}"></div>
+    <div th:insert="~{/fragment/header ::box}"></div>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="_csrf" th:content="${_csrf.token}">
+</head>
+
+<body>
+<h1 class="title" th:text="${festival.name}"></h1>
+<div class="container">
+    <div class="menu">
+        <div class="menu-item">
+            <a th:href="@{/festival/{id}(id=${festival.id})}">상세 설명</a>
+        </div>
+        <div class="menu-item">
+            <a th:href="@{/festival/{id}/search(id=${festival.id})}">관련 글 모음</a>
+        </div>
+        <div class="menu-item">
+            <a th:href="@{/festival/{id}/comment(id=${festival.id})}">댓글 남기기</a>
+        </div>
+    </div>
+</div>
+<div class="box">
+    <div class="content">
+        <div class="content-box">
+            <!-- 댓글 렌더링 영역 -->
+            <div th:class="cm_list">
+            </div>
+            <!--            /* 댓글 작성 */-->
+            <div class="cm_write">
+                <fieldset>
+                    <legend class="skipinfo">댓글 입력</legend>
+                    <div class="cm_input">
+                        <p><textarea id="content" name="content" onkeyup="countingLength(this);" cols="90" rows="4"
+                                     placeholder="댓글을 입력해 주세요."></textarea></p>
+                        <span><button type="button" class="btns" onclick="saveComment();">등 록</button> <i
+                                id="counter">0/300자</i></span>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.7/dayjs.min.js"></script>
+
+
+<script th:inline="javascript">
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    var sessionUser = [[${sessionUser}]];
+    window.onload = () => {
+        findAllComment();
+    }
+    //처음에만 controller api로 화면 넘어가고 이후부턴 json로 통신
+    function findAllComment() {
+
+        const fId = [[ ${festival.id}]];
+
+        console.log("ghaha")
+        $.ajax({
+            url: `/festival/${fId}/comment/list`,
+            type: 'get',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            async: false,
+            beforeSend: function(xhr){
+                xhr.setRequestHeader(header, token);
+            },
+            success: function (response) {
+                // 조회 데이터가 없는 경우
+                if (!response.length) {
+                    document.querySelector('.cm_list').innerHTML = '<div class="cm_none"><p>등록된 댓글이 없습니다.</p></div>';
+                    console.log("ASD")
+                    return false;
+                }
+                //  렌더링 할 HTML을 저장할 변수
+                let commentHtml = '';
+
+                //  댓글 HTML 추가
+                response.forEach(row => {
+                    commentHtml += `
+                        <div>
+                            <span class="writer_img"><img src="/default_profile.png" width="30" height="30" alt="기본 프로필 이미지"/></span>
+                            <p class="writer">
+                                <em>${row.writer}</em>
+                                <span class="date">${dayjs(row.createdDate).format('YYYY-MM-DD HH:mm')}</span>
+                            </p>
+                            <div class="cont"><div class="txt_con">${row.content}</div></div>
+                            <p class="func_btns">
+                             <button type="button" onclick="deleteComment(${row.id});" class="btns"><span class="icons icon_del">삭제</span></button>                            </p>
+                        </div>
+                    `;
+                })
+
+                // class= cm_list 요소를 찾아 HTML을 렌더링
+                document.querySelector('.cm_list').innerHTML = commentHtml;
+            },
+            error: function (request, status, error) {
+                console.log(error)
+            }
+        })
+    }
+
+    function deleteComment(id) {
+        if ( !confirm('댓글을 삭제합니다') ) {
+            return false;
+        }
+
+        const fId = [[ ${festival.id} ]];
+
+        $.ajax({
+            url : `/festival/${fId}/comment/${id}`,
+            type : 'delete',
+            dataType : 'json',
+            async : false,
+            beforeSend: function(xhr){
+                xhr.setRequestHeader(header, token);
+            },
+            success : function (response) {
+                alert('삭제되었습니다.');
+                findAllComment();
+            },
+            error : function (request, status, error) {
+                console.log(error)
+            }
+        })
+    }
+    function countingLength(content) {
+        if (content.value.length > 300) {
+            alert('댓글을 300자 이하로 입력해 주세요.');
+            content.value = content.value.substring(0, 300);
+            content.focus();
+        }
+        document.getElementById('counter').innerText = content.value.length + '/300자';
+    }
+
+    function saveComment() {
+        const content = document.getElementById('content');
+        const festival_id = [[ ${id}]];
+
+        if (sessionUser==null){
+            alert("로그인이 필요합니다");
+            return false;
+        }
+        const writer1 = sessionUser.nickName;
+        const params = {
+            content: content.value,
+            writer: writer1
+        }
+        $.ajax({
+            url: `/festival/${festival_id}/comment`,
+            type: 'post',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify(params),
+            async: false,
+            beforeSend: function(xhr){
+                xhr.setRequestHeader(header, token);
+            },
+            success: function() {
+                alert('저장되었습니다.');
+                content.value = '';
+                document.getElementById('counter').innerText = '0/300자';
+                findAllComment();
+            },
+            error: function (request, status, error) {
+                console.log(error)
+            }
+        })
+    }
+</script>
+<div th:insert="~{/fragment/footer ::google}"></div>
+</body>
+
+</html>

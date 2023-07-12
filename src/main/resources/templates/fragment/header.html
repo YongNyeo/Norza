@@ -1,0 +1,158 @@
+<head th:fragment="copy" xmlns:th="http://www.thymeleaf.org">
+    <meta charset="UTF-8">
+    <title>Navigation Bar and Table Template</title>
+    <style>
+        /* Navigation Bar Styles */
+        .title-bar {
+            background-color: white;
+            color: darkgreen;
+            display: flex;
+            padding: 10px;
+            justify-content: space-between;
+        }
+
+        .title-bar a {
+            background-color: transparent;
+            font-family: "Courier New";
+            color: green;
+            font-weight: bold;
+            font-size: xx-large;
+        }
+
+        .navigation-bar {
+            justify-content: space-between;
+            background-color: white;
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .navigation-bar a {
+            background-color: transparent;
+            text-decoration: none;
+            color: black;
+            margin-right: 10px;
+            text-decoration: none;
+        }
+
+        .navigation-bar a:hover {
+            text-decoration: underline;
+        }
+
+        /* Table Styles */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            white-space: nowrap; /* Prevent line break */
+            overflow-x: auto; /* Enable horizontal scrolling */
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            max-width: 200px; /* Set maximum width for cells */
+            overflow: hidden; /* Hide content if it exceeds the width */
+            text-overflow: ellipsis; /* Add ellipsis for truncated text */
+            background-color: #E0F8E0;
+        }
+
+        /* Other Styles */
+        body {
+            background-color: white;
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            table {
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            table {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<div th:fragment="nav" xmlns:th="http://www.thymeleaf.org">
+    <div class="title-bar">
+        <a th:href="@{/}">REST TIME</a>
+        <div th:if="${sessionUser != null}">
+
+            <h5 th:color="black" th:text="${sessionUser.nickName}+'님 어서오세요'"></h5>
+            <button onclick="location.href='http://localhost:8080/logout'">로그아웃</button>
+        </div>
+        <div th:if="${sessionUser == null}">
+            <button onclick="location.href='http://localhost:8080/oauth2/authorization/google'">로그인
+            </button>
+        </div>
+    </div>
+    <div class="navigation-bar">
+
+        <div><a th:href="@{/festival}">축제</a> &emsp;
+            <a th:href="@{/performance}">공연</a>&emsp;
+        </div>
+        <div>
+            <input type="text" placeholder="Search">
+            <button>Search</button>
+        </div>
+
+    </div>
+</div>
+<head th:fragment="menu" xmlns:th="http://www.thymeleaf.org">
+    <meta charset="UTF-8">
+    <style>
+        /* Container Styles */
+        .title {
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Menu Styles */
+        .menu {
+            display: flex;
+            justify-content: space-between;
+            width: 50%; /* Set to half of the screen width */
+        }
+
+        .menu-item {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            background-color: white;
+            border: 1px solid gray;
+        }
+    </style>
+</head>
+<head th:fragment="box" xmlns:th="http://www.thymeleaf.org">
+    <style>
+        /* Container Styles */
+        .box {
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Menu Styles */
+        .content {
+            display: flex;
+            justify-content: space-between;
+            width: 80%; /* Set to half of the screen width */
+        }
+
+        .content-box {
+            flex: 1;
+            text-align: left;
+            padding: 10px;
+            background-color: white;
+            border: 1px solid gray;
+        }
+    </style>
+</head>
+

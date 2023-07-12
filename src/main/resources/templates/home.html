@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:insert="~{/fragment/header ::nav}"></div>
+<div th:insert="~{/fragment/header ::copy}"></div>
+<div th:insert="~{/fragment/header ::box}"></div>
+<body>
+<div class="box">
+    <div class="content">
+        <div class="content-box">
+            <h3>실시간 생활/문화 뉴스</h3>
+            <div th:each="news : ${newsList}">
+                <img th:src="${news.imgLink}">
+                <h2><a th:href="@{${news.link}}" th:text="${news.title}"></a></h2>
+                <h5 th:text="${news.content}"></h5>
+                <hr>
+            </div>
+            </span>
+        </div>
+    </div>
+</div>
+<div th:insert="~{/fragment/footer ::google}"></div>
+</body>
+</html>

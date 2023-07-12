@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:insert="~{/fragment/header ::nav}"></div>
+<div th:insert="~{/fragment/header ::copy}"></div>
+
+<body>
+
+<!--<div class="gcse-search" ></div>-->
+
+<table>
+    <thead>
+    <tr>
+        <th>축제명</th>
+        <th>개최장소</th>
+        <th>축제시작일자</th>
+        <th>축제종료일자</th>
+<!--        <th>축제내용</th>-->
+        <th>주관기관</th>
+        <th>주최기관</th>
+        <th>후원기관</th>
+        <th>전화번호</th>
+<!--        <th>홈페이지주소</th>-->
+<!--        <th>관련정보</th>-->
+        <th>소재지도로명주소</th>
+        <th>소재지지번주소</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="festival : ${festivalList}">
+        <td><a th:href="@{/festival/{id}(id=${festival.id})}" th:text="${festival.name}"></a> </td>
+        <td th:text="${festival.location}"></td>
+        <td th:text="${festival.startDate}"></td>
+        <td th:text="${festival.endDate}"></td>
+        <td th:text="${festival.org}"></td>
+        <td th:text="${festival.open_org}"></td>
+        <td th:text="${festival.sponsor}"></td>
+        <td th:text="${festival.phone_num}"></td>
+        <td th:text="${festival.location1}"></td>
+        <td th:text="${festival.location2}"></td>
+    </tr>
+    </tbody>
+</table>
+<div th:insert="~{/fragment/footer ::google}"></div>
+
+</body>
+</html>
