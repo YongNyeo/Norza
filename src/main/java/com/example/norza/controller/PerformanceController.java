@@ -23,12 +23,8 @@ public class PerformanceController {
     private final PerformanceCommentService commentService;
 
     @GetMapping("")
-    public String showPerformanceList(@SessionAttribute(name = "sessionUser", required = false) SessionUser sessionUser,
-                                      Model model) {
+    public String showPerformanceList(Model model) {
         model.addAttribute(performanceService.findAll());
-        if (sessionUser != null) {
-            model.addAttribute("sessionUser", sessionUser);
-        }
         return "/performance/performance_list.html";
     }
     @GetMapping("/page")
@@ -38,26 +34,18 @@ public class PerformanceController {
     }
 
     @GetMapping("{id}")
-    public String showPerformanceOne(@SessionAttribute(name = "sessionUser", required = false) SessionUser sessionUser, @PathVariable long id, Model model) {
+    public String showPerformanceOne(@PathVariable long id, Model model) {
         //번호에 대한 검증 필요없음. 이건 검색이 아니라 리스트에서  클릭해서 들어가기때문에
         Map<String, String> map = performanceService.getMapById(id);
         model.addAttribute(performanceService.findById(id));
-//        model.addAttribute("sessionUser", sessionUser);
-        if (sessionUser != null) {
-            model.addAttribute("sessionUser", sessionUser);
-        }
         model.addAttribute("map", map);
         return "/performance/performance_one.html";
     }
 
     @GetMapping("{id}/search")
-    public String searchPerformanceOne(@SessionAttribute(name = "sessionUser", required = false) SessionUser sessionUser,
-                                             @PathVariable long id, Model model) throws IOException {
+    public String searchPerformanceOne(@PathVariable long id, Model model) throws IOException {
         Performance performance = performanceService.findById(id);
         model.addAttribute(performance);
-        if (sessionUser != null) {
-            model.addAttribute("sessionUser", sessionUser);
-        }
         model.addAttribute(performanceService.jsonToList(performance.getName()));
         return "/performance/performance_search.html";
     }
@@ -75,11 +63,9 @@ public class PerformanceController {
 
     @ResponseBody//저장하고나서는 저장 잘됐다고 날려주는 json
     @PostMapping("{id}/comment")
-    public PerformanceComment savePerformanceComment(@SessionAttribute(name = "sessionUser", required = false) SessionUser sessionUser, @PathVariable long id,
-                                                     @RequestBody PerformanceComment params, Model model) {
+    public PerformanceComment savePerformanceComment(@PathVariable long id, @RequestBody PerformanceComment params, Model model) {
         Long key = commentService.save(params, id);
         PerformanceComment s = commentService.findCommentById(key);
-        model.addAttribute("sessionUser", sessionUser);
 
 
         return s;
@@ -87,22 +73,16 @@ public class PerformanceController {
 
     @ResponseBody
     @GetMapping("{id}/comment/list") // 비동기로 계속해서 이 api를 요청할 예정임
-    public List<PerformanceComment> ShowPerformanceCommentList(@SessionAttribute(name = "sessionUser", required = false) SessionUser sessionUser, @PathVariable long id, Model model) {
+    public List<PerformanceComment> ShowPerformanceCommentList( @PathVariable long id, Model model) {
         List<PerformanceComment> list = commentService.findAllById(id);
-        if (sessionUser != null) {
-            model.addAttribute("sessionUser", sessionUser);
-        }
         return list;
     }
 
     @Transactional //delete의 경우 트랜잭션 걸어주기
     @ResponseBody
     @DeleteMapping("/{id}/comment/{commentId}")
-    public long deletePerformanceComment(@SessionAttribute(name = "sessionUser", required = false) SessionUser sessionUser, @PathVariable long id,
+    public long deletePerformanceComment(@PathVariable long id,
                                          @PathVariable long commentId, Model model) {
-        if (sessionUser != null) {
-            model.addAttribute("sessionUser", sessionUser);
-        }
         return commentService.delete(commentId);
     }
 
