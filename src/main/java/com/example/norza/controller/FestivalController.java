@@ -27,8 +27,8 @@ public class FestivalController {
 
     @GetMapping("")
     public String showFestivalList(Model model,@PageableDefault(page=0,size = 10,sort = "endDate",direction = Sort.Direction.ASC) Pageable pageable) {
-        model.addAttribute(festivalService.page(pageable));
-        return "/festival/festival_list.html";
+        model.addAttribute("festivalList",festivalService.page(pageable));
+        return "/festival/festival.html";
     }
 
     @GetMapping("{id}")

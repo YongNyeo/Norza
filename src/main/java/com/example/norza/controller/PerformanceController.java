@@ -26,7 +26,7 @@ public class PerformanceController {
     @GetMapping("")
     public String showPerformanceList(Model model,@PageableDefault(page=0,size = 10,sort = "endDate",direction = Sort.Direction.ASC)Pageable pageable) {
         model.addAttribute("performanceList",performanceService.page(pageable));
-        return "/performance/page.html";
+        return "/performance/performance.html";
     }
 
     @GetMapping("{id}")
