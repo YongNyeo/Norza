@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:insert="~{/fragment/header ::nav}"></div>
+<div th:insert="~{/fragment/header ::copy}"></div>
+
+<body>
+
+<table>
+    <thead>
+    <tr>
+        <th>축제명</th>
+        <th>개최장소</th>
+        <th>축제시작일자</th>
+        <th>축제종료일자</th>
+        <th>주관기관</th>
+        <th>주최기관</th>
+        <th>후원기관</th>
+        <th>전화번호</th>
+        <th>소재지도로명주소</th>
+        <th>소재지지번주소</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="festival : ${festivalList}">
+        <td><a th:href="@{/festival/{id}(id=${festival.id})}" th:text="${festival.name}"></a> </td>
+        <td th:text="${festival.location}"></td>
+        <td th:text="${festival.startDate}"></td>
+        <td th:text="${festival.endDate}"></td>
+        <td th:text="${festival.org}"></td>
+        <td th:text="${festival.open_org}"></td>
+        <td th:text="${festival.sponsor}"></td>
+        <td th:text="${festival.phone_num}"></td>
+        <td th:text="${festival.location1}"></td>
+        <td th:text="${festival.location2}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<nav style="text-align: center;">
+    <!--        페이지 변수 설정-->
+    <ul class="pagination" th:with="start=${T(java.lang.Math).floor(festivalList.number/10)*10 + 1},last=(${start + 9 < festivalList.totalPages ? start + 9 : festivalList.totalPages})">
+
+        <li>
+            <a th:href="@{/festival(page=1)}" aria-label="First">
+                <span aria-hidden="true">First</span>
+            </a>
+
+        <li th:class="${festivalList.first} ? 'disabled'">
+            <a th:href="${festivalList.first} ? '#' :@{/festival(page=${festivalList.number})}" aria-label="Previous">
+                <span aria-hidden="true">&lt;</span>
+            </a>
+        </li>
+
+        <li th:each="page: ${#numbers.sequence(start, last)}" th:class="${page == festivalList.number + 1} ? 'active'">
+            <a th:text="${page}" th:href="@{/festival(page=${page})}"></a>
+        </li>
+
+        <li th:class="${festivalList.last} ? 'disabled'">
+            <a th:href="${festivalList.last} ? '#' : @{/festival(page=${festivalList.number + 2})}" aria-label="Next">
+                <span aria-hidden="true">&gt;</span>
+            </a>
+        </li>
+
+        <li>
+            <a th:href="@{/festival(page=${festivalList.totalPages})}" aria-label="Last">
+                <span aria-hidden="true">Last</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+<div th:insert="~{/fragment/footer ::google}"></div>
+</body>
+</html>

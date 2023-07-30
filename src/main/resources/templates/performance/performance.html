@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:insert="~{/fragment/header ::nav}"></div>
+<div th:insert="~{/fragment/header ::copy}"></div>
+
+<body>
+
+<!--<div class="gcse-search" ></div>-->
+
+<table>
+    <thead>
+    <tr>
+        <th>공연명</th>
+        <th>공연장소</th>
+        <th>공연시작일자</th>
+        <th>공연종료일자</th>
+        <th>공연내용</th>
+        <th>요금정보</th>
+        <th>관람요금</th>
+        <th>객석수</th>
+        <th>유의사항</th>
+        <th>주관기관</th>
+        <th>주최기관</th>
+        <th>후원기관</th>
+        <th>전화번호</th>
+        <th>소재지도로명주소</th>
+        <th>소재지지번주소</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="performance : ${performanceList}">
+        <td><a th:href="@{/performance/{id}(id=${performance.id})}" th:text="${performance.name}"></a> </td>
+        <td th:text="${performance.location}"></td>
+        <td th:text="${performance.startDate}"></td>
+        <td th:text="${performance.endDate}"></td>
+        <td th:text="${performance.content}"></td>
+        <td th:text="${performance.fee}"></td>
+        <td th:text="${performance.fee_num}"></td>
+        <td th:text="${performance.warning}"></td>
+        <td th:text="${performance.age}"></td>
+        <td th:text="${performance.org}"></td>
+        <td th:text="${performance.open_org}"></td>
+        <td th:text="${performance.sponsor}"></td>
+        <td th:text="${performance.phone_num}"></td>
+        <td th:text="${performance.location1}"></td>
+        <td th:text="${performance.location2}"></td>
+    </tr>
+    </tbody>
+</table>
+
+
+<nav style="text-align: center;">
+    <!--        페이지 변수 설정-->
+    <ul class="pagination" th:with="start=${T(java.lang.Math).floor(performanceList.number/10)*10 + 1},last=(${start + 9 < performanceList.totalPages ? start + 9 : performanceList.totalPages})">
+
+        <li>
+            <a th:href="@{/performance(page=1)}" aria-label="First">
+                <span aria-hidden="true">First</span>
+            </a>
+
+        <li th:class="${performanceList.first} ? 'disabled'">
+            <a th:href="${performanceList.first} ? '#' :@{/performance(page=${performanceList.number})}" aria-label="Previous">
+                <span aria-hidden="true">&lt;</span>
+            </a>
+        </li>
+
+        <li th:each="page: ${#numbers.sequence(start, last)}" th:class="${page == performanceList.number + 1} ? 'active'">
+            <a th:text="${page}" th:href="@{/performance(page=${page})}"></a>
+        </li>
+
+        <li th:class="${performanceList.last} ? 'disabled'">
+            <a th:href="${performanceList.last} ? '#' : @{/performance(page=${performanceList.number + 2})}" aria-label="Next">
+                <span aria-hidden="true">&gt;</span>
+            </a>
+        </li>
+
+        <li>
+            <a th:href="@{/performance(page=${performanceList.totalPages})}" aria-label="Last">
+                <span aria-hidden="true">Last</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+<div th:insert="~{/fragment/footer ::google}"></div>
+</body>
+</html>
