@@ -1,6 +1,7 @@
 package com.example.norza.service;
 
 import com.example.norza.domain.Festival;
+import com.example.norza.domain.Performance;
 import com.example.norza.domain.Search;
 import com.example.norza.repository.FestivalRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +29,9 @@ import java.util.*;
 public class FestivalService {
     private final FestivalRepository festivalRepository;
 
-    public List<Festival> findAll() {
-        List<Festival> festivalList = festivalRepository.findAll(Sort.by(Sort.Direction.ASC, "startDate"));
+    public Page<Festival> page(Pageable pageable) {
+
+        Page<Festival> festivalList = festivalRepository.findAll(pageable);
         return festivalList;
     }
 

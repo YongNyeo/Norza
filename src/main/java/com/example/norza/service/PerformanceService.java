@@ -9,11 +9,10 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Pageable;
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -23,19 +22,11 @@ import java.util.*;
 public class PerformanceService {
     private final PerformanceRepository performanceRepository;
 
-    public List<Performance> findAll() {
-        List<Performance> performanceList = performanceRepository.findAll(Sort.by(Sort.Direction.ASC, "startDate"));
+    public Page<Performance> page(Pageable pageable) {
+
+        Page<Performance> performanceList = performanceRepository.findAll(pageable);
         return performanceList;
     }
-    public Page<Performance> page() {
-        PageRequest pageRequest = PageRequest.of(0, 20, Sort.by("endDate").ascending());
-        long totalElements = performanceRepository.findAllByOrderByEndDateAsc(pageRequest).getTotalElements();
-        Page<Performance> performanceList = performanceRepository.findAllByOrderByEndDateAsc(pageRequest);
-
-        return performanceList;
-
-    }
-
     public Performance findById(long id) {
         return performanceRepository.findById(id);
     }
@@ -56,8 +47,6 @@ public class PerformanceService {
         map.put("주관기관", performance.getOrg());
         map.put("주최기관", performance.getOpen_org());
         map.put("후원기관", performance.getSponsor());
-
-        map.put("관련정보", performance.getEtc());
         map.put("소재지 도로명주소", performance.getLocation1());
         map.put("소재지 지번주소", performance.getLocation2());
         return map;
