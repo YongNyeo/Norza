@@ -2,6 +2,7 @@
     <meta charset="UTF-8">
     <title>Navigation Bar and Table Template</title>
     <style>
+
         /* Navigation Bar Styles */
         .title-bar {
             background-color: white;
@@ -10,8 +11,7 @@
             padding: 10px;
             justify-content: space-between;
         }
-
-        .title-bar a {
+          .title-bar a {
             background-color: transparent;
             font-family: "Courier New";
             color: green;
@@ -61,7 +61,12 @@
         body {
             background-color: white;
         }
-
+        ul {
+            padding: 0;
+        }
+        li {
+            display: inline-block;
+        }
         /* Media Queries */
         @media (max-width: 768px) {
             table {
@@ -77,14 +82,19 @@
     </style>
 </head>
 <div th:fragment="nav" xmlns:th="http://www.thymeleaf.org">
+    <div>
+        <span>이름</span>
+        <input type="text" th:placeholder="${session.sessionUser?.email}"
+               th:value="${session.sessionUser?.email}" name="userName" id="userName" readonly>
+    </div>
+
     <div class="title-bar">
         <a th:href="@{/}">REST TIME</a>
-        <div th:if="${sessionUser != null}">
-
-            <h5 th:color="black" th:text="${sessionUser.nickName}+'님 어서오세요'"></h5>
+        <div th:if="${session.sessionUser?.email != null}">
+            <h5 th:color="black" th:text="${session.sessionUser?.nickName}+'님 어서오세요'"></h5>
             <button onclick="location.href='http://localhost:8080/logout'">로그아웃</button>
         </div>
-        <div th:if="${sessionUser == null}">
+        <div th:if="${session.sessionUser?.email == null}">
             <button onclick="location.href='http://localhost:8080/oauth2/authorization/google'">로그인
             </button>
         </div>
