@@ -14,7 +14,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 
@@ -26,6 +25,9 @@ public class InitFestival {
     @PostConstruct
     public void init() {
         try {
+            if (festivalRepository.findById(1)!=null) {
+                return;
+            }
             JSONParser jsonParser = new JSONParser();
             Reader reader = new FileReader("/Users/mac/Downloads/전국문화축제표준데이터.json");
             JSONObject data = (JSONObject) jsonParser.parse(reader);
