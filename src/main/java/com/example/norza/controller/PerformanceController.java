@@ -1,11 +1,12 @@
 package com.example.norza.controller;
 
-import com.example.norza.domain.Performance;
-import com.example.norza.domain.PerformanceComment;
-import com.example.norza.domain.SessionUser;
+import com.example.norza.domain.*;
 import com.example.norza.service.PerformanceCommentService;
 import com.example.norza.service.PerformanceService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,13 +24,8 @@ public class PerformanceController {
     private final PerformanceCommentService commentService;
 
     @GetMapping("")
-    public String showPerformanceList(Model model) {
-        model.addAttribute(performanceService.findAll());
-        return "/performance/performance_list.html";
-    }
-    @GetMapping("/page")
-    public String paging(Model model) {
-        model.addAttribute(performanceService.page());
+    public String showPerformanceList(Model model,@PageableDefault(page=0,size = 10,sort = "endDate",direction = Sort.Direction.ASC)Pageable pageable) {
+        model.addAttribute("performanceList",performanceService.page(pageable));
         return "/performance/page.html";
     }
 

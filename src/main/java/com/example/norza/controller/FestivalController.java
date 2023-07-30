@@ -5,6 +5,9 @@ import com.example.norza.service.FestivalService;
 import com.example.norza.domain.Festival;
 import com.example.norza.domain.FestivalComment;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,9 +26,8 @@ public class FestivalController {
     private final FestivalCommentService commentService;
 
     @GetMapping("")
-    public String showFestivalList(Model model) {
-        model.addAttribute(festivalService.findAll());
-
+    public String showFestivalList(Model model,@PageableDefault(page=0,size = 10,sort = "endDate",direction = Sort.Direction.ASC) Pageable pageable) {
+        model.addAttribute(festivalService.page(pageable));
         return "/festival/festival_list.html";
     }
 
