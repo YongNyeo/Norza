@@ -40,12 +40,12 @@ public class FestivalController {
         return "/festival/festival_one.html";
     }
 
-    @GetMapping("{id}/search")
-    public String searchFestivalOne(@PathVariable long id, Model model) throws IOException {
+    @GetMapping("{id}/related")
+    public String relatedFestivalOne(@PathVariable long id, Model model) throws IOException {
         Festival festival = festivalService.findById(id);
         model.addAttribute(festival);
         model.addAttribute(festivalService.jsonToList(festival.getName()));
-        return "/festival/festival_search.html";
+        return "/festival/festival_related.html";
     }
 
     @GetMapping("{id}/comment") //댓글남기기 메뉴를 누르면 댓글 화면을 처음에만 보여주기위한 URI

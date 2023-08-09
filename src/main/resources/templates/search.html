@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:insert="~{/fragment/header ::nav}"></div>
+<div th:insert="~{/fragment/header ::copy}"></div>
+<div th:insert="~{/fragment/header ::box}"></div>
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<div class="box">
+    <div class="content">
+        <div class="content-box">
+            <h1>축제 검색결과</h1>
+            <div th:each="f:${festivalList}">
+                <td><a th:href="@{/festival/{id}(id=${f.id})}" th:text="${f.name}"></a> </td>
+                <div th:text="${f.content}"></div>
+                <hr>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="box">
+    <div class="content">
+        <div class="content-box">
+            <h1>공연 검색결과</h1>
+            <div th:each="f:${performanceList}">
+                <td><a th:href="@{/performance/{id}(id=${f.id})}" th:text="${f.name}"></a> </td>
+                <div th:text="${f.content}"></div>
+                <hr>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+

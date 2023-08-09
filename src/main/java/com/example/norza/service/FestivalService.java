@@ -1,8 +1,7 @@
 package com.example.norza.service;
 
 import com.example.norza.domain.Festival;
-import com.example.norza.domain.Performance;
-import com.example.norza.domain.Search;
+import com.example.norza.domain.Related;
 import com.example.norza.repository.FestivalRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
@@ -12,7 +11,6 @@ import org.json.simple.parser.ParseException;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -54,8 +52,19 @@ public class FestivalService {
         map.put("소재지 지번주소", festival.getLocation2());
         return map;
     }
+
+    public List<Festival> searchList(String selection,String content) {
+
+        if (selection.equals("title")) {
+            return festivalRepository.findByNameContaining(content);
+        } else if (selection.equals("content")) {
+            return festivalRepository.findByContentContaining(content);
+        } else return festivalRepository.findByLocationContaining(content);
+    }
+
+
     //네이버
-    public List<Search> jsonToList(String name) throws IOException {
+    public List<Related> jsonToList(String name) throws IOException {
         String clientId = "froS04i71O5XiFeOQm7C"; //애플리케이션 클라이언트 아이디
         String clientSecret = "VTSYLGUPeV"; //애플리케이션 클라이언트 시크릿    }
         String text = null;
@@ -73,9 +82,9 @@ public class FestivalService {
 
     }
 
-    private List<Search> parsing(String sb) {
+    private List<Related> parsing(String sb) {
         JSONParser parser = new JSONParser();
-        ArrayList<Search> searchList = new ArrayList<>();
+        ArrayList<Related> relatedList = new ArrayList<>();
         try {
             JSONObject JsonObj = (JSONObject) parser.parse(sb);
             JSONArray jsonArray = (JSONArray) JsonObj.get("items");
@@ -84,13 +93,13 @@ public class FestivalService {
                 if (object.isEmpty()) {
                     break;
                 }
-                Search search = new Search(((String) object.get("title")).replaceAll("<b>","").replaceAll("</b>",""), ((String) object.get("description")).replaceAll("<b>","").replaceAll("</b>",""), (String) object.get("link"));
-                searchList.add(search);
+                Related related = new Related(((String) object.get("title")).replaceAll("<b>","").replaceAll("</b>",""), ((String) object.get("description")).replaceAll("<b>","").replaceAll("</b>",""), (String) object.get("link"));
+                relatedList.add(related);
             }
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
-        return searchList;
+        return relatedList;
     }
 
     private static String get(String apiUrl, Map<String, String> requestHeaders) {

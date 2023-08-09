@@ -38,22 +38,18 @@ public class PerformanceController {
         return "/performance/performance_one.html";
     }
 
-    @GetMapping("{id}/search")
-    public String searchPerformanceOne(@PathVariable long id, Model model) throws IOException {
+    @GetMapping("{id}/related")
+    public String relatedPerformanceOne(@PathVariable long id, Model model) throws IOException {
         Performance performance = performanceService.findById(id);
         model.addAttribute(performance);
         model.addAttribute(performanceService.jsonToList(performance.getName()));
-        return "/performance/performance_search.html";
+        return "/performance/performance_related.html";
     }
 
     @GetMapping("{id}/comment") //댓글남기기 메뉴를 누르면 댓글 화면을 처음에만 보여주기위한 URI
-    public String showPerformanceComment(@SessionAttribute(name = "sessionUser", required = false) SessionUser sessionUser, @PathVariable long id, Model model) {
+    public String showPerformanceComment(@PathVariable long id, Model model) {
         Performance performance = performanceService.findById(id);
         model.addAttribute(performance);
-        if (sessionUser != null) {
-            model.addAttribute("sessionUser", sessionUser);
-        }
-
         return "/performance/performance_comment.html";
     }
 
