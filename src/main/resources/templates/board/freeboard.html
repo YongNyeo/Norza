@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:insert="~{/fragment/header ::nav}"></div>
+<div th:insert="~{/fragment/header ::copy}"></div>
+
+<body>
+
+<table>
+    <thead>
+    <tr>
+        <th>게시글 번호</th>
+        <th>제목</th>
+        <th>작성자</th>
+        <th>작성시간</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="freeboard : ${freeBoardList}">
+        <td th:text="${freeboard.id}"></td>
+        <td><a th:href="@{/freeboard/{id}(id=${freeboard.id})}" th:text="${freeboard.title}"></a></td>
+        <td th:text="${freeboard.name}"></td>
+        <td th:text="${freeboard.createdTime}"></td>
+
+    </tr>
+    </tbody>
+</table>
+<div th:if="${session.sessionUser?.email != null}">
+    <a href="/freeboard/save">
+        <button>글쓰기</button>
+    </a>
+</div>
+
+<div th:insert="~{/fragment/footer ::google}"></div>
+</body>
+</html>

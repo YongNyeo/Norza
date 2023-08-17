@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:insert="~{/fragment/header ::nav}"></div>
+    <div th:insert="~{/fragment/header ::copy}"></div>
+    <div th:insert="~{/fragment/header ::menu}"></div>
+    <div th:insert="~{/fragment/header ::box}"></div>
+
+</head>
+
+<body>
+<div class="box">
+    <div class="content">
+        <div class="content-box">
+            <div th:each="f:${freeBoard}">
+                <h3 th:text="${f.title}"></h3>
+                <div th:text="${f.createdTime}"></div>
+                <hr>
+                <div th:text="${f.content}"></div>
+                <hr>
+                <div th:if="${session.sessionUser?.nickName == f.name}">
+                <a th:href="@{/freeboard/{id}/update(id=${f.id})}"  >수정하기</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:insert="~{/fragment/footer ::google}"></div>
+</body>
+</html>

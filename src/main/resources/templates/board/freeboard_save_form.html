@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:insert="~{/fragment/header ::nav}"></div>
+<div th:insert="~{/fragment/header ::copy}"></div>
+
+<body>
+<form action="/freeboard/save"  method="POST">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+    <div >
+        <label for="title">제목:</label>
+        <input type="text" id="title"  name="title"  required>
+    </div>
+    <div>
+        <label for="content">내용:</label>
+        <textarea id="content" name="content"  rows="5" required></textarea>
+    </div>
+    <div>
+        <button type="submit">저장</button>
+    </div>
+    </div>
+</form>
+<div th:insert="~{/fragment/footer ::google}"></div>
+</body>
+</html>
