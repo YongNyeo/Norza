@@ -103,6 +103,8 @@
 
         <div><a th:href="@{/festival}">축제</a> &emsp;
             <a th:href="@{/performance}">공연</a>&emsp;
+            <a th:href="@{/freeboard}">자유게시판</a>&emsp;
+            <a th:href="@{/mypage}">마이페이지</a>&emsp;
         </div>
         <form action="/search" method="POST" >
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
