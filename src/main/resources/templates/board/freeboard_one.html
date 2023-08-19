@@ -19,11 +19,15 @@
                 <div th:text="${f.content}"></div>
                 <hr>
                 <div th:if="${session.sessionUser?.nickName == f.name}">
-                <a th:href="@{/freeboard/{id}/update(id=${f.id})}"  >수정하기</a>
+                    <a th:href="@{/freeboard/{id}/update(id=${f.id})}">수정하기</a>
+                    <form th:action="@{/freeboard/{id}(id=${f.id})}" th:method="delete">
+                        <input type="hidden" th:name="id" th:value="${f.id}"/>
+                        <button type="submit">삭제</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div th:insert="~{/fragment/footer ::google}"></div>
+    <div th:insert="~{/fragment/footer ::google}"></div>
 </body>
 </html>

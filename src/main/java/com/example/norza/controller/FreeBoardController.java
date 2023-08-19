@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 
@@ -66,6 +67,13 @@ public class FreeBoardController { //자유게시판과 공지사항만 관리
         freeBoardService.update(id,board);
         redirectAttributes.addAttribute("id",id);
         return "redirect:/freeboard/{id}";
+    }
+
+    @Transactional //delete
+    @DeleteMapping("{id}")
+    public String deleteFreeBoard(@PathVariable long id){
+        freeBoardService.delete(id);
+        return "redirect:/freeboard";
     }
 
     //저장,수정시 이용하는 Dto -> Entity

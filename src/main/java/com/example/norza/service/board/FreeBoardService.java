@@ -35,8 +35,8 @@ public class FreeBoardService implements BoardService<FreeBoard,FreeBoardSaveDto
     }
 
     @Override
-    public void delete(FreeBoard freeBoard) {
-
+    public void delete(long id) {
+        freeBoardRepository.deleteById(id);
     }
 
     public void update(long id, FreeBoardSaveDto dto) {

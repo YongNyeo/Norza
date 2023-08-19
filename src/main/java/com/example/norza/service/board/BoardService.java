@@ -4,13 +4,14 @@ import com.example.norza.domain.SessionUser;
 
 import java.util.List;
 
-public interface BoardService<T,E> {
-    public void save(T t, SessionUser sessionUser);
-    public List<T> findAll();
+public interface BoardService<T, E> {
+    void save(T t, SessionUser sessionUser);
 
-    public T findById(long id);
+    List<T> findAll();
 
-    public void update(long id,E e);
+    T findById(long id);
 
-    public void delete(T t);
+    void update(long id, E e);
+
+    void delete(long id);
 }
