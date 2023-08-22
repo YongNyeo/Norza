@@ -1,6 +1,7 @@
 package com.example.norza.controller;
 
 
+import com.example.norza.config.Login;
 import com.example.norza.domain.FreeBoard;
 import com.example.norza.domain.SessionUser;
 import com.example.norza.dto.FreeBoardSaveDto;
@@ -37,13 +38,11 @@ public class FreeBoardController { //자유게시판과 공지사항만 관리
     //게시글 등록 POST
     //세션있을때만 등록 가능
     @PostMapping("save")
-    public String saveFreeBoard(@Valid @ModelAttribute FreeBoardSaveDto board,
-                                @SessionAttribute(name = "sessionUser") SessionUser sessionUser) {
+    public String saveFreeBoard(@Login SessionUser sessionUser,@Valid @ModelAttribute FreeBoardSaveDto board) {
 
         freeBoardService.save(getFreeBoard(board), sessionUser);
         return "redirect:/freeboard";
     }
-
     //게시글 보기
     @GetMapping("{id}")
     public String showFreeBoardOne(@PathVariable long id, Model model) {
