@@ -1,5 +1,7 @@
 package com.example.norza.controller;
 
+import com.example.norza.config.Login;
+import com.example.norza.domain.SessionUser;
 import com.example.norza.service.FestivalService;
 import com.example.norza.service.NewsService;
 import com.example.norza.service.PerformanceService;
@@ -26,10 +28,20 @@ public class HomeController {
         return "home.html";
     }
 
+    //저장하는 기능이 아니라서 PRG 패턴 필요 X. 그냥 바로 보여줘도됨
     @PostMapping("/search")
-    public String search(@Valid @RequestParam String selection,@Valid @RequestParam String content, Model model) {
-        model.addAttribute("festivalList",festivalService.searchList(selection, content));
-        model.addAttribute("performanceList",performanceService.searchList(selection, content));
+    public String search(@Valid @RequestParam String selection, @Valid @RequestParam String content, Model model) {
+        model.addAttribute("festivalList", festivalService.searchList(selection, content));
+        model.addAttribute("performanceList", performanceService.searchList(selection, content));
         return "search.html";
+
+    }
+
+    @GetMapping("/mypage")
+    public String myPage(@Login SessionUser user, Model model){
+        model.addAttribute("user",user);
+        return "mypage.html";
     }
 }
+
+

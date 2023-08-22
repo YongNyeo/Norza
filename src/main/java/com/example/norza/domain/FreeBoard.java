@@ -1,8 +1,10 @@
 package com.example.norza.domain;
 
 
+import com.example.norza.dto.FreeBoardSaveDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.parameters.P;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -28,13 +30,23 @@ public class FreeBoard extends BaseTime{
 
     private String name;
 
-    public FreeBoard(String title, String content) {
-        this.title = title;
+
+
+    public FreeBoard(String content) {
         this.content = content;
+    }
+
+    public void DtoToFreeBoard(FreeBoardSaveDto dto){
+        this.title = dto.getTitle();
+        this.content = dto.getContent();
     }
 
     public void saveUser(User user) {
         this.user = user;
         this.name = user.getNickname();
     }
+
+
 }
+
+
