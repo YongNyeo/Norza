@@ -1,6 +1,5 @@
 package com.example.norza.filter;
 
-import org.hibernate.Session;
 import org.springframework.util.PatternMatchUtils;
 
 import javax.servlet.*;
@@ -8,8 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class LogFilter implements Filter {
 
@@ -39,6 +37,7 @@ public class LogFilter implements Filter {
         } catch (Exception e) {
             throw e;
         }
+
     }
 
     private boolean isBlackList(String requestURI) {

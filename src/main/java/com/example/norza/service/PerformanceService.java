@@ -50,13 +50,9 @@ public class PerformanceService {
         map.put("소재지 지번주소", performance.getLocation2());
         return map;
     }
-//
-//    public List<Festival> searchList(Search search) {
-//
-//    }
 
     //네이버
-    public List<Related> jsonToList(String name) throws IOException {
+    public List<Related> jsonToList(String name){
         String clientId = "froS04i71O5XiFeOQm7C"; //애플리케이션 클라이언트 아이디
         String clientSecret = "VTSYLGUPeV"; //애플리케이션 클라이언트 시크릿    }
         String text = null;

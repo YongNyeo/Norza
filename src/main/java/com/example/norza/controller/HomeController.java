@@ -23,7 +23,7 @@ public class HomeController {
     private final FestivalService festivalService;
 
     @GetMapping("/")
-    public String home(Model model) throws IOException {
+    public String home(Model model) {
         model.addAttribute("newsList", newsService.CrawlingNews());
         return "home.html";
     }
