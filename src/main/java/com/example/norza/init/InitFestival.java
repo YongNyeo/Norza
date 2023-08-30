@@ -1,6 +1,8 @@
 package com.example.norza.init;
 
 import com.example.norza.domain.Festival;
+import com.example.norza.exception.ParsingException;
+import com.example.norza.exception.RuntimeFileNotFoundException;
 import com.example.norza.repository.FestivalRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
@@ -59,13 +61,10 @@ public class InitFestival {
                 festivalRepository.save(new Festival(name,location,startDate,endDate,content,org,open_org,sponsor,phone_num,homepage,etc,location1,location2));
 
             }
-        } catch (FileNotFoundException e){
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeFileNotFoundException(e);
+        } catch (IOException | ParseException e) {
+            throw new ParsingException(e);
         }
-
     }
 }

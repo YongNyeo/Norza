@@ -2,6 +2,8 @@ package com.example.norza.init;
 
 
 import com.example.norza.domain.Performance;
+import com.example.norza.exception.ParsingException;
+import com.example.norza.exception.RuntimeFileNotFoundException;
 import com.example.norza.repository.PerformanceRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
@@ -65,11 +67,9 @@ public class  InitPerformance {
 
             }
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeFileNotFoundException(e);
+        } catch (IOException | ParseException e) {
+            throw new ParsingException(e);
         }
     }
 
